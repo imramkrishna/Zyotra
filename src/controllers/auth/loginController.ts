@@ -31,7 +31,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             value: accessToken,
             httpOnly: true,
             sameSite: 'strict',
-            maxAge: 15 * 60, // 15 minutes
+            maxAge: 30, // 15 minutes
         });
         set.status = StatusCode.OK;
         return { message: "Login successful",userId: user[0].id,accessToken};

@@ -3,19 +3,13 @@ import { verifyAccessToken } from "../jwt/verifyTokens";
 import { StatusCode } from "../types/types";
 
 const checkAuth = new Elysia().derive(async ({ headers, set,cookie }: Context) => {
-    const authHeader=headers['authorization'];
-    var token:string="";
-    if(authHeader){
-        token=authHeader.split(' ')[1];
-    }else{
-        token=cookie.refreshToken.value as string;
+   const token=cookie.accessToken.value as string;
+   if(!token){
+    set.status = StatusCode.EXPIRED_TOKEN
+    return {
+        message: "Access Token Missing"
     }
-    if(!token){
-        set.status = StatusCode.UNAUTHORIZED
-        return {
-            message: "No token provided"
-        }
-    }
+   }
     console.log("Verifying token:", token);
     const isValid = await verifyAccessToken(token)
     console.log("Token verification result:", isValid);
