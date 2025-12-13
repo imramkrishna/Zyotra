@@ -6,10 +6,10 @@ import { StatusCode } from "../../types/types";
 import { and, eq } from "drizzle-orm";
 
 const registerController = async ({ body, set }: Context) => {
-    const { email, password, otp } = body as { email: string; password: string; otp: string };
-    if (!email || !password || !otp) {
+    const { email, password, name, otp } = body as { email: string; password: string; name: string; otp: string };
+    if (!email || !password || !name || !otp) {
         set.status = StatusCode.BAD_REQUEST;
-        return { message: "Email, password, and OTP are required" };
+        return { message: "Email, password, name, and OTP are required" };
     }
     try {
         const result = await db.transaction(async (tx) => {
@@ -23,7 +23,7 @@ const registerController = async ({ body, set }: Context) => {
             if (new Date(otpRow.expiresAt) <= new Date()) return { success: false, message: "OTP expired" };
 
             const passwordHash = await hashPassword(password);
-            await tx.insert(users).values({ email, password: passwordHash });
+            await tx.insert(users).values({ email, password: passwordHash, name });
             await tx.delete(otps).where(eq(otps.id, otpRow.id));
 
             return { success: true };

@@ -3,6 +3,7 @@ import { pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: text("password").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -25,6 +26,6 @@ export const otps= pgTable("otps", {
   status: varchar("status", { length: 50 }).default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   expiresAt: timestamp("expires_at")
-    .default(sql`now() + interval '1 minute'`)
+    .default(sql`now() + interval '2 minute'`)
     .notNull(),
 });

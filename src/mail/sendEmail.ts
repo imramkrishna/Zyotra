@@ -11,6 +11,11 @@ interface SendEmailOptions {
 let transporter: Transporter;
 
 function getTransporter(): Transporter {
+  console.log("Creating email transporter...");
+  console.log("SMTP_HOST:", process.env.SMTP_HOST);
+  console.log("SMTP_PORT:", process.env.SMTP_PORT);
+  console.log("SMTP_USER:", process.env.SMTP_USER ? "defined" : "undefined");
+  console.log("SMTP_PASS:", process.env.SMTP_PASS ? "defined" : "undefined");
   if (!transporter) {
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,        // e.g., "smtp.gmail.com"
@@ -40,7 +45,7 @@ export async function sendEmail({
       to,
       from,
       subject:"Zyotra Verification Email",
-      html: generateOtpEmailContent(otp),
+      html: await generateOtpEmailContent(otp),
     });
     console.log(`Email sent to ${to}`);
     await db.insert(otps).values({
