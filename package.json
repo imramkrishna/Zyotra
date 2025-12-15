@@ -11,7 +11,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "build":"bun run db:generate && bun run db:migrate && tsc -b"
+    "build":"bun run db:generate && bun run db:migrate && bun build src/index.ts --outdir dist --target=bun"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.0",
