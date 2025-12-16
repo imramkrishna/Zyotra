@@ -7,6 +7,7 @@ config();
 const app = new Elysia()
 const allowedOrigins=[
   'http://localhost:5173',
+  'https://zyotraportal.ramkrishna.cloud'
 ]
 app.use(cors({
   origin:allowedOrigins,
