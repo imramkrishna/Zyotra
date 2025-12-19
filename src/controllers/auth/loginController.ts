@@ -27,7 +27,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             httpOnly: true,
             secure: isProd,            // must be true on production
             sameSite: isProd ? 'none' : 'lax',
-            domain: isProd ? ".ramkrishna.cloud" : undefined,
+            domain: isProd ? "ramkrishna.cloud" : undefined,
             path: '/',
             maxAge: 15 * 24 * 60 * 60,
         });
@@ -37,7 +37,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             httpOnly: true,
             secure: isProd,
             sameSite: isProd ? 'none' : 'lax',
-            domain: isProd ? ".ramkrishna.cloud" : undefined,
+            domain: isProd ? "ramkrishna.cloud" : undefined,
             path: '/',
             maxAge: 15 * 60,
         });
