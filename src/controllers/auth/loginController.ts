@@ -20,12 +20,25 @@ const loginController = async ({ body, set, cookie }: Context) => {
         }
         const accessToken = await generateAccessToken(user[0].id.toString());
         const refreshToken = await generateRefreshToken(user[0].id.toString());
+        const isProd = process.env.NODE_ENV === 'production';
         cookie.refreshToken.set({
             value: refreshToken,
-            httpOnly: true,       // Prevents JS access (XSS protection)
-            sameSite: 'none',   // CSRF protection
-            path: '/',            // Available for all paths
-            maxAge: 15 * 24 * 60 * 60, // 15 days (in seconds)
+            httpOnly: true,
+            secure: isProd,            // must be true on production
+            sameSite: isProd ? 'none' : 'lax',
+            domain: isProd ? ".ramkrishna.cloud" : undefined,
+            path: '/',
+            maxAge: 15 * 24 * 60 * 60,
+        });
+
+        cookie.accessToken.set({
+            value: accessToken,
+            httpOnly: true,
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
+            domain: isProd ? ".ramkrishna.cloud" : undefined,
+            path: '/',
+            maxAge: 15 * 60,
         });
         cookie.accessToken.set({
             value: accessToken,
@@ -34,7 +47,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             maxAge: 15 * 60, // 15 minutes (in seconds)
         });
         set.status = StatusCode.OK;
-        return { message: "Login successful",userId: user[0].id,accessToken};
+        return { message: "Login successful", userId: user[0].id, accessToken };
     } catch (error) {
         set.status = StatusCode.INTERNAL_SERVER_ERROR;
         return { message: "An error occurred during login" };
