@@ -29,7 +29,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: 'ramkrishna.cloud',  // Try WITHOUT the leading dot
+            domain: '.ramkrishna.cloud',  // Try WITHOUT the leading dot
             path: '/',
             maxAge: 15 * 24 * 60 * 60,
         });
@@ -39,7 +39,7 @@ const loginController = async ({ body, set, cookie }: Context) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            domain: 'ramkrishna.cloud',  // Try WITHOUT the leading dot
+            domain: '.ramkrishna.cloud',  // Try WITHOUT the leading dot
             path: '/',
             maxAge: 15 * 60,
         });
