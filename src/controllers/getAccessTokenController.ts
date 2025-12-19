@@ -18,12 +18,16 @@ const getAccessTokenController = async ({ set, cookie }: Context) => {
         }
     }
     const userId = isValid.userId;
+    const isProd = true;
     const accessToken = await generateAccessToken(userId);
         cookie.accessToken.set({
             value: accessToken,
             httpOnly: true,
-            sameSite: 'strict',
-            maxAge: 15 * 60, // 15 minutes
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
+            domain: isProd ? "ramkrishna.cloud" : undefined,
+            path: '/',
+            maxAge: 15 * 60,
         });
     set.status = StatusCode.OK;
     return {
